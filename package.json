@@ -1,0 +1,25 @@
+{
+	"name": "spindles-redeem-key-manager",
+	"version": "0.0.1",
+	"description": "A node module to manage redeem keys for anything. Could be used in production, though I wouldn't trust it as this was just a learning project. Open to contributions :D",
+	"main": "main.js",
+	"engines": {
+		"node": "*"
+	},
+	"author": {
+		"name": "Spindles",
+		"url": "https://spindles.dev/",
+		"email": "spindles@spindles.dev"
+	},
+	"repository": {
+	  "type": "git",
+	  "url": "git://github.com/SpindlesDev/Redeem-Key-Manager"
+	},
+	"bundleDependencies": true,
+	"deprecated": false,
+	"license": "MIT",
+	"dependencies": {
+		"json-query": "^2.2.2",
+		"uuid": "^8.3.2"
+	}
+}
