@@ -69,7 +69,7 @@ console.log(
 		"SpindlesDev"
 	)
 );
-/*
+/* Output:
 {
 	success: false,
 	data: {
