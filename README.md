@@ -61,4 +61,21 @@ Redeem key "e0462bca-5ca2-49b0-aa0f-7bb664ac6848" is being redeemed.
 	code: "successfully-redeemed-key",
 }
 */
+
+// Trys to redeem same key as above but fails due to it being invalid from previous use
+console.log(
+	RedeemKeyManager.redeemKey(
+		"e0462bca-5ca2-49b0-aa0f-7bb664ac6848",
+		"SpindlesDev"
+	)
+);
+/*
+{
+	success: false,
+	data: {
+		message: "Invalid redeem key provided.",
+	},
+	code: "invalid-redeem-key",
+}
+*/
 ```
