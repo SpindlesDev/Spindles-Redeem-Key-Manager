@@ -1,12 +1,12 @@
 # Spindles-Redeem-Key-Manager
 A node module to manage redeem keys for anything. Could be used in production, though I wouldn't trust it as this was just a learning project. Open to contributions :D 
 # Install:
-```
+```console
 npm install git://github.com/SpindlesDev/Spindles-Redeem-Key-Manager
 ```
 
 # Example script to run it:
-```
+```javascript
 const RedeemKeyManager = require("spindles-redeem-key-manager");
 const { v4: uuidv4 } = require("uuid");
 
