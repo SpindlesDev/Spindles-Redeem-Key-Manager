@@ -1,57 +1,101 @@
+/***********************************\
+* 	@author SpindlesDev (Ryan N)	*
+*	@license MIT					*
+* 	@date 08/16/2021				*
+\***********************************/
+
 // Require main dependencies
 const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
 const JsonQuery = require("json-query");
 
 // RedeemKey files
-const redeemKeyListFile = "./redeemKeyList.json";
+const redeemKeyListFile = "../../redeemKeyList.json";
 
+/**
+ * @description Function to generate redeemable keys and it Will stored them in the 
+ * redeemKeyList.json file in your main workspace
+ * @param {number} amountToGenerate
+ * @param {string} reward
+ * @example 
+ * generateKeys(10, {
+ * 	itemName: "name",
+ * 	assetID: 1234,
+ * 	itemID: "some-id-here"
+ * })
+ * @returns Response data in an API-ish maner in JSON
+ * @example
+ * // Structure
+ * {
+ * 		success: bolean,
+ * 		data: {
+ * 			message: string
+ * 		}
+ * }
+ */
 exports.generateKeys = function (amountToGenerate, reward) {
 	// WIP
-	let currentCount = 0;
+	try {
+		let currentCount = 0;
 
-	while (currentCount < amountToGenerate) {
-		if (!fs.existsSync(redeemKeyListFile) === true) {
-			fs.writeFileSync(redeemKeyListFile, '{"keys": []}');
-		}
-		const redeemKeyList = JSON.parse(
-			fs.readFileSync(redeemKeyListFile)
-		);
-		const generateUUID = uuidv4();
-		const generatedUUID = generateUUID;
-
-		let newRedeemKey = {
-			redeemKey: generatedUUID,
-			reward: reward,
-			valid: true,
-			redeemedBy: "nobody",
-		};
-		console.log(JSON.stringify(newRedeemKey));
-		redeemKeyList.keys.push(newRedeemKey);
-		fs.writeFileSync(
-			redeemKeyListFile,
-			JSON.stringify(redeemKeyList)
-		);
-
-		currentCount++;
-		if (currentCount === amountToGenerate) {
-			console.log(
-				"Genrated a total of " +
-					amountToGenerate +
-					" redeem keys"
+		while (currentCount < amountToGenerate) {
+			if (!fs.existsSync(redeemKeyListFile) === true) {
+				fs.writeFileSync(
+					redeemKeyListFile,
+					'{"keys": []}'
+				);
+			}
+			const redeemKeyList = JSON.parse(
+				fs.readFileSync(redeemKeyListFile)
 			);
-			const response = {
-				success: true,
-				data: {
-					message: `Generated ${amountToGenerate} successfully`,
-				},
-				code: "generated-keys-success",
+
+			let newRedeemKey = {
+				redeemKey: uuidv4(),
+				reward: reward,
+				valid: true,
+				redeemedBy: "nobody",
 			};
-			return response;
+			console.log(JSON.stringify(newRedeemKey));
+			redeemKeyList.keys.push(newRedeemKey);
+			fs.writeFileSync(
+				redeemKeyListFile,
+				JSON.stringify(redeemKeyList)
+			);
+
+			currentCount++;
+			if (currentCount === amountToGenerate) {
+				console.log(
+					"Genrated a total of " +
+						amountToGenerate +
+						" redeem keys"
+				);
+				const response = {
+					success: true,
+					data: {
+						message: `Generated ${amountToGenerate} successfully`,
+					},
+					code: "generated-keys-success",
+				};
+				return response;
+			}
 		}
+	} catch {
+		const response = {
+			success: false,
+			code: "generated-keys-failure",
+		};
+		return response;
 	}
 };
 
+
+/**
+ * @ignore
+ * @description Doesn't quite work yet. Still a work in progress. 
+ * @description Checks if a provided key is valid or not without redeeming it. 
+ * @param {string} key 
+ * @returns 
+ */
 exports.checkKey = function (key) {
 	// WIP
 	if (!key) {
@@ -79,6 +123,18 @@ exports.checkKey = function (key) {
 	}
 };
 
+/**
+ * @description 
+ * Redeems a redeem key ${key} as user ${user} (However you'd store users) and marks
+ * the redeem key as invalid to prevent repeated use.
+ * @param {string} key
+ * @param {string} user
+ * @example 
+ * redeemKey("uuidv4-key-here", "7564...1459")
+ * @returns
+ * JSON response in an API manor if it was successful or not via .success === true and
+ * if successful it will contain key reward under .data.reward 
+ */
 exports.redeemKey = function (key, user) {
 	// WIP
 	if (!key || !user) {
@@ -93,9 +149,7 @@ exports.redeemKey = function (key, user) {
 	}
 
 	const redeemKeyListBuffer = fs.readFileSync(redeemKeyListFile);
-	const redeemKeyListObject = JSON.parse(redeemKeyListBuffer);
-	const redeemKeyListJSON = JSON.stringify(redeemKeyListObject);
-	const redeemKeyList = redeemKeyListObject;
+	const redeemKeyList = JSON.parse(redeemKeyListBuffer);
 
 	const keyLocator = JsonQuery(`keys[redeemKey=${key}]`, {
 		data: redeemKeyList,
@@ -114,14 +168,19 @@ exports.redeemKey = function (key, user) {
 			};
 			return response;
 		} else {
-			console.log("Redeem key " +
-				JSON.stringify(redeemKeyList.keys[foundKey].redeemKey) +
+			console.log(
+				"Redeem key " +
+					JSON.stringify(
+						redeemKeyList.keys[foundKey]
+							.redeemKey
+					) +
 					" is being redeemed."
 			);
 			const response = {
 				success: true,
 				data: {
-					reward: redeemKeyList.keys[foundKey].reward,
+					reward: redeemKeyList.keys[foundKey]
+						.reward,
 					message: "Successfully redeemed key!",
 				},
 				code: "successfully-redeemed-key",
