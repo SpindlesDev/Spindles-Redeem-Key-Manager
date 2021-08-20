@@ -1,6 +1,6 @@
 {
 	"name": "spindles-redeem-key-manager",
-	"version": "0.0.1",
+	"version": "1.0.0-alpha",
 	"description": "A node module to manage redeem keys for anything. Could be used in production, though I wouldn't trust it as this was just a learning project. Open to contributions :D",
 	"main": "main.js",
 	"engines": {
@@ -19,7 +19,13 @@
 	"deprecated": false,
 	"license": "MIT",
 	"dependencies": {
-		"json-query": "^2.2.2",
-		"uuid": "^8.3.2"
+		"uuid": "^8.3.2",
+		"sequelize": "^6.6.5",
+		"pg": "^8.7.1",
+		"pg-hstore": "^2.3.4",
+		"mysql2": "^2.3.0",
+		"mariadb": "^2.5.4",
+		"sqlite3": "^5.0.2",
+		"tedious": "^11.4.0"
 	}
 }

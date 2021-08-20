@@ -7,17 +7,34 @@
 // Require main dependencies
 const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
-const JsonQuery = require("json-query");
 
-// RedeemKey files
-const redeemKeyListFile = "../../redeemKeyList.json";
+exports.init = function () {
+	// Require main dependencies
+	const fs = require("fs");
+
+	// Config
+	const configFile = "../../SRKM.Config.json";
+	const defaultConfigData = {
+		_message: "DO NOT CHANGE configVersion! It can break features for future updates!",
+		configVersion: 0,
+		databaseType: "json",
+		databaseConfig: {
+			settings: {},
+		},
+	};
+	if (fs.existsSync(configFile) !== true) {
+		fs.writeFileSync(configFile, defaultConfigData);
+	}
+
+	// Configure database options here
+};
 
 /**
- * @description Function to generate redeemable keys and it Will stored them in the 
+ * @description Function to generate redeemable keys and it Will stored them in the
  * redeemKeyList.json file in your main workspace
  * @param {number} amountToGenerate
  * @param {string} reward
- * @example 
+ * @example
  * generateKeys(10, {
  * 	itemName: "name",
  * 	assetID: 1234,
@@ -88,13 +105,12 @@ exports.generateKeys = function (amountToGenerate, reward) {
 	}
 };
 
-
 /**
  * @ignore
- * @description Doesn't quite work yet. Still a work in progress. 
- * @description Checks if a provided key is valid or not without redeeming it. 
- * @param {string} key 
- * @returns 
+ * @description Doesn't quite work yet. Still a work in progress.
+ * @description Checks if a provided key is valid or not without redeeming it.
+ * @param {string} key
+ * @returns
  */
 exports.checkKey = function (key) {
 	// WIP
@@ -124,16 +140,16 @@ exports.checkKey = function (key) {
 };
 
 /**
- * @description 
+ * @description
  * Redeems a redeem key ${key} as user ${user} (However you'd store users) and marks
  * the redeem key as invalid to prevent repeated use.
  * @param {string} key
  * @param {string} user
- * @example 
+ * @example
  * redeemKey("uuidv4-key-here", "7564...1459")
  * @returns
  * JSON response in an API manor if it was successful or not via .success === true and
- * if successful it will contain key reward under .data.reward 
+ * if successful it will contain key reward under .data.reward
  */
 exports.redeemKey = function (key, user) {
 	// WIP
