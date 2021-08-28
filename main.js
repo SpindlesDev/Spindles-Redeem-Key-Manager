@@ -7,26 +7,86 @@
 // Require main dependencies
 const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
+const jsonQuery = require("json-query")
+
+// Config
+const configFile = "../../SRKM.Config.json";
+const defaultConfigData = {
+	_message: "DO NOT CHANGE configVersion! It can break the config for future updates!",
+	configVersion: 0,
+	databaseType: "json",
+	databaseConfig: {
+		settings: {},
+		fileLocation: "../../redeemKeyDatabase.json",
+	},
+};
+function writeConfigFile() {
+	fs.writeFileSync(configFile, defaultConfigData);
+}
+function readConfigFile() {
+	const configJSONBuffer = fs.readFileSync(configFIle);
+	const configJSON = JSON.parse(configJSONBuffer);
+	return configJSON
+}
+const configSource = null
+const configDatabaseType = null
+const databaseLocation = null
+const jsonDatabase = null
+
+exports.postInstall = function () {
+	if (fs.existsSync(configFile) !== true) {
+		writeConfigFile();
+	}
+	const configJSON = readConfigFile()
+	if (configJSON.configVersion < 0) {
+		writeConfigFile();
+	}
+};
 
 exports.init = function () {
-	// Require main dependencies
-	const fs = require("fs");
-
-	// Config
-	const configFile = "../../SRKM.Config.json";
-	const defaultConfigData = {
-		_message: "DO NOT CHANGE configVersion! It can break features for future updates!",
-		configVersion: 0,
-		databaseType: "json",
-		databaseConfig: {
-			settings: {},
-		},
-	};
 	if (fs.existsSync(configFile) !== true) {
-		fs.writeFileSync(configFile, defaultConfigData);
+		writeConfigFile();
 	}
+	const configJSON = readConfigFile()
 
 	// Configure database options here
+	const configJSONDatabaseType = configJSON.databaseType.toLowerCase()
+	
+	switch(configJSONDatabaseType) {
+		case json:
+			// WIP
+			configDatabaseType = "json"
+			databaseLocation = configJSON.databaseConfig.fileLocation
+			jsonDatabase = fs.readFileSync(databaseLocation)
+			configSource = jsonDatabase
+			
+			break;
+		
+		case mysql: 
+			// WIP
+
+			break;
+
+		case mariadb:
+			// WIP
+
+			break;
+
+		case sqlite:
+			// WIP
+
+			break;
+
+		case postgres:
+			// WIP
+
+			break;
+		
+		case tedious:
+			// WIP
+
+			break;
+	}
 };
 
 /**

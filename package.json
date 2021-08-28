@@ -15,6 +15,9 @@
 	  "type": "git",
 	  "url": "git://github.com/SpindlesDev/Redeem-Key-Manager"
 	},
+	"scripts": {
+		"postinstall": "node -e `require(\"$INIT_CWD./main.js\").postInstall()'"
+	},
 	"bundleDependencies": true,
 	"deprecated": false,
 	"license": "MIT",
