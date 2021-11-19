@@ -39,7 +39,7 @@ exports.generateKeys = function (amountToGenerate, reward) {
 		let currentCount = 0;
 
 		while (currentCount < amountToGenerate) {
-			if (!fs.existsSync(redeemKeyListFile) === true) {
+			if (fs.existsSync(redeemKeyListFile) !== true) {
 				fs.writeFileSync(
 					redeemKeyListFile,
 					'{"keys": []}'
