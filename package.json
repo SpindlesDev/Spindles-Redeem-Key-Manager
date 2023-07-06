@@ -20,6 +20,6 @@
 	"license": "MIT",
 	"dependencies": {
 		"json-query": "^2.2.2",
-		"uuid": "^8.3.2"
+		"uuid": "^9.0.0"
 	}
 }
